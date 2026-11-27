@@ -1,0 +1,8 @@
+{
+  "appName": "Hello Deploy",
+  "version": "1.0.0",
+  "buildId": "local",
+  "commitSha": "unknown",
+  "buildTimestamp": "unknown",
+  "environment": "production"
+}

@@ -1,0 +1,31 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        APP_VERSION: ${APP_VERSION:-1.0.0}
+        BUILD_ID: ${BUILD_ID:-local}
+        GIT_COMMIT: ${GIT_COMMIT:-unknown}
+        BUILD_TIMESTAMP: ${BUILD_TIMESTAMP:-unknown}
+        APP_ENV: ${APP_ENV:-production}
+    # ports:
+    #   - "8080:8080"
+    expose:
+      - "8080"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 3s
+      start_period: 5s
+      retries: 3
+    # Run with read-only root filesystem; nginx needs /tmp for temp dirs and its pid file
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    # The non-root master never changes user or file ownership, so no
+    # capabilities are required beyond the empty set.
+    cap_drop:
+      - ALL
